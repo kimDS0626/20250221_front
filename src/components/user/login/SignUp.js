@@ -419,17 +419,17 @@ const SignupSection = styled.div`
   align-items: center;
   margin-top: 130px;
   padding-top: 30px;
-  width: 500px;
+  width: 600px;
   min-height: 1074px;
   background-color: #f4f4f4;
-  margin-bottom: 30px;
+  margin-bottom: 100px;
 `;
 // -------------------------------------------------------------------
 const SignupLogo = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  width: 500px;
+  width: 600px;
   height: 40px;
   background-color: #f4f4f4;
   margin-bottom: 30px;
@@ -443,7 +443,7 @@ const SignupTitle = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 500px;
+  width: 600px;
   height: 40px;
   margin-bottom: 30px;
   h1 {
@@ -455,7 +455,7 @@ const SignupTitle = styled.div`
 
 // -----------------------------------------------------------------
 const MailBox = styled.div`
-  width: 500px;
+  width: 600px;
 
   align-items: center;
   display: flex;
@@ -499,7 +499,7 @@ const MailBox = styled.div`
 `;
 // ------------------------------------------------------------------------
 const PwBox = styled.div`
-  width: 500px;
+  width: 600px;
 
   align-items: center;
   display: flex;
@@ -544,7 +544,7 @@ const PwBox = styled.div`
 // ------------------------------------------------------------------------
 
 const NickBox = styled.div`
-  width: 500px;
+  width: 600px;
   align-items: center;
   display: flex;
   margin-bottom: 10px;
@@ -587,7 +587,7 @@ const NickBox = styled.div`
 `;
 // ------------------------------------------------------------------------
 const OtherBox = styled.div`
-  width: 500px;
+  width: 600px;
   align-items: center;
   display: flex;
   margin-bottom: 10px;
@@ -622,7 +622,7 @@ const OtherBox = styled.div`
 // -----------------------------------------------------------------
 const AnimalBox = styled.div`
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   background-color: #f4f4f4;
 
   display: flex;
@@ -688,7 +688,7 @@ const SignupSectionE = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 500px;
+  width: 600px;
   height: 60px;
   margin-top: 20px;
   margin-bottom: 20px;
