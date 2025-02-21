@@ -29,18 +29,20 @@ function SignUp() {
     { id: Date.now(), petName: "", species: "", age: "", weight: "" },
   ]);
 
-  const onChangeIdHandler = (e) => {
+  const handleIdChange = (e) => {
     const idValue = e.target.value;
     setId(idValue);
-    handleIdCheck(idValue);
-  };
 
-  const handleIdChange = (e) => {
-    setId(e.target.value);
-    setIdError("");
-    setIsIdAvailable(false);
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!idValue) {
+      setIdError("이메일을 입력해주세요.");
+    } else if (!emailRegex.test(idValue)) {
+      setIdError("올바른 이메일 형식이 아닙니다.");
+    } else {
+      setIdError(""); // 유효한 이메일 형식이면 오류 메시지 제거
+    }
+    setIsIdAvailable(false); // 이메일 확인 버튼을 클릭하기 전에 이메일을 재검토
   };
-
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
     setNicknameError("");
@@ -57,14 +59,16 @@ function SignUp() {
   };
 
   const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (password !== e.target.value) {
+    const value = e.target.value;
+    setConfirmPassword(value);
+
+    // 비밀번호와 확인 비밀번호를 비교하여 오류 메시지를 설정
+    if (password !== value) {
       setConfirmError("비밀번호가 일치하지 않습니다.");
     } else {
-      setConfirmError("");
+      setConfirmError(""); // 비밀번호가 일치하면 오류 메시지 제거
     }
   };
-
   const handleIdCheck = async () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!id) {
@@ -123,9 +127,16 @@ function SignUp() {
       setIdError("인증 코드 전송에 실패했습니다.");
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // 비밀번호 확인 오류가 있는지 체크
+    if (password !== confirmPassword) {
+      setConfirmError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    // 나머지 유효성 검사와 제출 로직
     if (
       !isIdAvailable ||
       !isNicknameAvailable ||
@@ -244,7 +255,10 @@ function SignUp() {
             <tr>
               <td>
                 {" "}
-                <td>{passwordError && <small>{passwordError}</small>}</td>
+                <td>
+                  {passwordError && <small>{passwordError}</small>}
+                  {confirmError && <small>{confirmError}</small>}{" "}
+                </td>
               </td>
             </tr>
           </table>
