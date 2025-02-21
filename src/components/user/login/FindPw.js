@@ -76,7 +76,7 @@ function FindPassword() {
               value={email}
               onChange={handleEmailChange}
             />
-            <button onClick={handleSendCode}>인증번호 발송</button>
+            <button onClick={handleSendCode}>발송</button>
           </div>
         </FindInput>
 
@@ -178,6 +178,7 @@ const FindInput = styled.div`
   margin-bottom: 10px;
   justify-content: center;
   background-color: #f4f4f4;
+  position: relative;
   div {
     width: 100%;
     display: flex;
@@ -195,10 +196,12 @@ const FindInput = styled.div`
     margin: 0 auto;
   }
   button {
-    background-color: #111111;
-    color: white;
+    right: 90px;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #111111;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 16px;
     cursor: pointer;
   }

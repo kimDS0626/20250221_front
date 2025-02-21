@@ -164,7 +164,7 @@ const InputBox = styled.div`
 
     }
      input:nth-child(2) {
-
+ margin-top: 5px;
         }
 
   }
