@@ -3,6 +3,16 @@ import { Link } from "react-router";
 import styled from "styled-components";
 import logo_b from "./imgs/logo_b.png";
 function FindId() {
+  const [emailFound, setEmailFound] = useState(""); // 이메일을 찾은 상태를 저장
+  const [isEmailVisible, setIsEmailVisible] = useState(false); // 이메일을 보여줄지 여부
+
+  const handleFindEmail = () => {
+    // 여기에서 실제 이메일 찾는 로직을 넣을 수 있음
+    const foundEmail = "example@email.com"; // 예시 이메일
+    setEmailFound(foundEmail);
+    setIsEmailVisible(true); // 이메일을 찾으면 폼을 보이도록 설정
+  };
+
   return (
     <FindIdContainer>
       <FindIdSection>
@@ -19,6 +29,18 @@ function FindId() {
             <input type="password" placeholder="전화번호"></input>
           </div>
         </FindiIdInput>
+
+        {isEmailVisible && (
+          <FoundEmailSection>
+            <p>찾은 이메일: {emailFound}</p>
+          </FoundEmailSection>
+        )}
+
+        <PwFind>
+          <Link to="/findWd">
+            <h6>비밀번호찾기 </h6>
+          </Link>
+        </PwFind>
 
         <CheckBox>
           <button>확인</button>
@@ -84,14 +106,13 @@ const FindiIdInput = styled.div`
   display: flex;
   flex-direction: column; /* 세로로 정렬 */
   align-items: center;
-  margin-bottom: 10px;
   justify-content: center;
   background-color: #f4f4f4;
   gap: 20px; /* input 사이의 간격을 20px로 설정 */
 
   div {
     width: 100%;
-    height: 150px;
+    height: 120px;
   }
   input:first-child {
     margin-bottom: 5px;
@@ -106,6 +127,34 @@ const FindiIdInput = styled.div`
     height: 60px;
     display: block;
     margin: 0 auto;
+  }
+`;
+
+const FoundEmailSection = styled.div`
+  margin: 20px 0;
+  text-align: center;
+  p {
+    font-size: 18px;
+    color: #111111;
+  }
+`;
+
+const PwFind = styled.div`
+  margin: 12px 0;
+  width: 100%; /* Make it take full width */
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  height: 40px;
+
+  a {
+    text-decoration: none;
+  }
+
+  h6 {
+    font-weight: regular;
+    font-size: 16px;
+    color: #111111;
   }
 `;
 const CheckBox = styled.div`
