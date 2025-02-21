@@ -391,7 +391,7 @@ function SignUp() {
 const SignupContainer = styled.div`
   width: 1920px;
   height: 100%;
-  min-height: 1840px;
+  min-height: 1340px;
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
@@ -406,7 +406,7 @@ const SignupSection = styled.div`
   margin-top: 130px;
   padding-top: 30px;
   width: 500px;
-  min-height: 1574px;
+  min-height: 1074px;
   background-color: #f4f4f4;
   margin-bottom: 30px;
 `;
@@ -672,6 +672,7 @@ const SignupSectionE = styled.div`
   width: 500px;
   height: 60px;
   margin-top: 20px;
+  margin-bottom: 20px;
   button {
     font-size: 20px;
     font-weight: 700;
