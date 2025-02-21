@@ -121,7 +121,7 @@ const LoginSection = styled.div`
   margin: auto;
 
   position: relative;
-  width: 500px;
+  width: 600px;
   height: 740px;
 
   text-align: center;
@@ -135,7 +135,7 @@ const LoginSection = styled.div`
 `;
 
 const LoginTitle = styled.div`
-  width: 500px;
+  width: 600px;
   height: 40px;
   h1 {
     font-weight: bold;
