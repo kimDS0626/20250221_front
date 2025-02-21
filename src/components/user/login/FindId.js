@@ -13,12 +13,12 @@ function FindId() {
         <Title>
           <h4> 아이디찾기 </h4>
         </Title>
-        <LoginInput>
+        <FindiIdInput>
           <div>
             <input type="text" placeholder="이름"></input>
             <input type="password" placeholder="전화번호"></input>
           </div>
-        </LoginInput>
+        </FindiIdInput>
 
         <CheckBox>
           <button>확인</button>
@@ -46,7 +46,7 @@ const FindIdSection = styled.div`
   align-items: center;
   margin-top: 130px;
   padding-top: 30px;
-  width: 500px;
+  width: 600px;
   min-height: 500px;
   background-color: #f4f4f4;
   margin-bottom: 100px;
@@ -55,7 +55,7 @@ const FindLogo = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
-  width: 500px;
+  width: 600px;
   height: 40px;
   background-color: #f4f4f4;
   margin-bottom: 30px;
@@ -69,7 +69,7 @@ const Title = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 500px;
+  width: 600px;
   height: 40px;
   margin-bottom: 30px;
   h4 {
@@ -79,8 +79,8 @@ const Title = styled.div`
   }
 `;
 
-const LoginInput = styled.div`
-  width: 500px;
+const FindiIdInput = styled.div`
+  width: 600px;
   display: flex;
   flex-direction: column; /* 세로로 정렬 */
   align-items: center;
@@ -112,7 +112,7 @@ const CheckBox = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 500px;
+  width: 600px;
   height: 60px;
   margin-top: 20px;
   margin-bottom: 20px;
