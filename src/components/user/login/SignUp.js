@@ -468,6 +468,7 @@ const MailBox = styled.div`
   }
 
   input {
+    outline: none;
     font-weight: 300;
     margin-bottom: 2px;
     border: none;
@@ -511,6 +512,7 @@ const PwBox = styled.div`
   }
 
   input {
+    outline: none;
     font-weight: 300;
     margin-bottom: 2px;
     border: none;
@@ -554,6 +556,7 @@ const NickBox = styled.div`
   }
 
   input {
+    outline: none;
     font-weight: 300;
     margin-bottom: 2px;
     border: none;
@@ -596,6 +599,7 @@ const OtherBox = styled.div`
   }
 
   input {
+    outline: none;
     font-weight: 300;
     margin-bottom: 2px;
     border: none;
@@ -669,6 +673,7 @@ const Formtable = styled.table`
   }
 
   input {
+    outline: none;
     width: 100%;
     max-width: 460px;
     height: 60px;
