@@ -37,7 +37,7 @@ function FindId() {
         )}
 
         <PwFind>
-          <Link to="/findWd">
+          <Link to="/findPw">
             <h6>비밀번호찾기 </h6>
           </Link>
         </PwFind>
