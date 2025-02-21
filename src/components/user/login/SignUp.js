@@ -1,185 +1,160 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import {
+  idDuplicateCheck,
+  nicknameDuplicateCheck,
+  sendVerificationCode,
+} from "./api";
 import logo_b from "./imgs/logo_b.png";
 
 function SignUp() {
   const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-
   const [idError, setIdError] = useState("");
+  const [isIdAvailable, setIsIdAvailable] = useState(false);
+
+  const [nickname, setNickname] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
+  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmError, setConfirmError] = useState("");
 
-  const [isIdCheck, setIsIdCheck] = useState(false);
-  const [isIdAvailable, setIsIdAvailable] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+
+  const [forms, setForms] = useState([
+    { id: Date.now(), petName: "", species: "", age: "", weight: "" },
+  ]);
 
   const onChangeIdHandler = (e) => {
     const idValue = e.target.value;
     setId(idValue);
-    idCheckHandler(idValue);
+    handleIdCheck(idValue);
   };
 
-  const onChangePasswordHandler = (e) => {
-    const { name, value } = e.target;
-    if (name === "password") {
-      setPassword(value);
-      passwordCheckHandler(value, confirm);
+  const handleIdChange = (e) => {
+    setId(e.target.value);
+    setIdError("");
+    setIsIdAvailable(false);
+  };
+
+  const handleNicknameChange = (e) => {
+    setNickname(e.target.value);
+    setNicknameError("");
+    setIsNicknameAvailable(false);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (e.target.value.length < 8) {
+      setPasswordError("비밀번호는 8자리 이상이어야 합니다.");
     } else {
-      setConfirm(value);
-      passwordCheckHandler(password, value);
-    }
-  };
-
-  const idCheckHandler = async (id) => {
-    const idRegex = /^[a-z\d]{5,10}$/;
-    if (id === "") {
-      setIdError("아이디를 입력해주세요.");
-      setIsIdAvailable(false);
-      return false;
-    } else if (!idRegex.test(id)) {
-      setIdError("아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.");
-      setIsIdAvailable(false);
-      return false;
-    }
-    try {
-      const responseData = await idDuplicateCheck(id);
-      if (responseData) {
-        setIdError("사용 가능한 아이디입니다.");
-        setIsIdCheck(true);
-        setIsIdAvailable(true);
-        return true;
-      } else {
-        setIdError("이미 사용중인 아이디입니다.");
-        setIsIdAvailable(false);
-        return false;
-      }
-    } catch (error) {
-      alert("서버 오류입니다. 관리자에게 문의하세요.");
-      console.error(error);
-      return false;
-    }
-  };
-
-  const idDuplicateCheck = async (id) => {
-    try {
-      const response = await fetch(`/api/check-id?userId=${id}`);
-      const data = await response.json();
-      return data.available; // 서버 응답 구조에 따라 수정 필요
-    } catch (error) {
-      console.error("아이디 중복 확인 요청 실패:", error);
-      return false;
-    }
-  };
-
-  const passwordCheckHandler = (password, confirm) => {
-    const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
-    if (password === "") {
-      setPasswordError("비밀번호를 입력해주세요.");
-      return false;
-    } else if (!passwordRegex.test(password)) {
-      setPasswordError(
-        "비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다."
-      );
-      return false;
-    } else if (confirm !== password) {
       setPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    if (password !== e.target.value) {
       setConfirmError("비밀번호가 일치하지 않습니다.");
-      return false;
     } else {
-      setPasswordError("");
       setConfirmError("");
-      return true;
     }
   };
-  const [nickname, setNickname] = useState("");
-  const [nicknameError, setNicknameError] = useState("");
-  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
-  const [isNicknameCheck, setIsNicknameCheck] = useState(false);
 
-  const nicknameCheckHandler = async (nickname) => {
-    const nicknameRegex = /^[a-zA-Z0-9가-힣]{2,10}$/;
-    if (nickname === "") {
-      setNicknameError("닉네임을 입력해주세요.");
-      setIsNicknameAvailable(false);
-      return false;
-    } else if (!nicknameRegex.test(nickname)) {
-      setNicknameError(
-        "닉네임은 2~10자의 영소문자, 숫자, 한글만 입력 가능합니다."
-      );
-      setIsNicknameAvailable(false);
-      return false;
+  const handleIdCheck = async () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!id) {
+      setIdError("이메일을 입력해주세요.");
+      return;
     }
+    if (!emailRegex.test(id)) {
+      setIdError("올바른 이메일 형식이 아닙니다.");
+      return;
+    }
+
     try {
-      const responseData = await nicknameDuplicateCheck(nickname);
-      if (responseData) {
-        setNicknameError("사용 가능한 닉네임입니다.");
-        setIsNicknameCheck(true);
-        setIsNicknameAvailable(true);
-        return true;
+      const available = await idDuplicateCheck(id);
+      if (available) {
+        setIdError("사용 가능한 이메일입니다.");
+        setIsIdAvailable(true);
       } else {
-        setNicknameError("이미 사용중인 닉네임입니다.");
-        setIsNicknameAvailable(false);
-        return false;
+        setIdError("이미 사용 중인 이메일입니다.");
+        setIsIdAvailable(false);
       }
     } catch (error) {
-      alert("서버 오류입니다. 관리자에게 문의하세요.");
-      console.error(error);
-      return false;
+      setIdError("서버 오류가 발생했습니다.");
     }
   };
-  const nicknameDuplicateCheck = async (nickname) => {
+
+  const handleNicknameCheck = async () => {
+    if (!nickname) {
+      setNicknameError("닉네임을 입력해주세요.");
+      return;
+    }
+
     try {
-      const response = await fetch(`/api/check-nickname?nickname=${nickname}`);
-      const data = await response.json();
-      return data.isAvailable; // 서버에서 받은 { isAvailable: true/false }
+      const available = await nicknameDuplicateCheck(nickname);
+      if (available) {
+        setNicknameError("사용 가능한 닉네임입니다.");
+        setIsNicknameAvailable(true);
+      } else {
+        setNicknameError("이미 사용 중인 닉네임입니다.");
+        setIsNicknameAvailable(false);
+      }
     } catch (error) {
-      console.error("닉네임 중복 확인 중 오류 발생:", error);
-      return false; // 에러가 발생한 경우 닉네임을 사용 불가능한 것으로 간주
+      setNicknameError("서버 오류가 발생했습니다.");
     }
   };
 
-  // const signupHandler = async (e) => {
-  //   e.preventDefault();
+  const handleVerification = async () => {
+    if (!isIdAvailable) {
+      setIdError("이메일 중복 확인을 먼저 진행해주세요.");
+      return;
+    }
 
-  //   const idCheckresult = await idCheckHandler(id);
-  //   if (idCheckresult) setIdError("");
-  //   else return;
-  //   if (!isIdCheck || !isIdAvailable) {
-  //     alert("아이디 중복 검사를 해주세요.");
-  //     return;
-  //   }
-
-  //   const passwordCheckResult = passwordCheckHandler(password, confirm);
-  //   if (passwordCheckResult) {
-  //     setPasswordError("");
-  //     setConfirmError("");
-  //   } else return;
-
-  //   try {
-  //     const responseData = await signup(id, password, confirm);
-  //     if (responseData) {
-  //       localStorage.setItem("loginId", id);
-  //       setOpenModal(true);
-  //     } else {
-  //       alert("회원가입에 실패하였습니다. 다시 시도해주세요.");
-  //     }
-  //   } catch (error) {
-  //     alert("회원가입에 실패하였습니다. 다시 시도해주세요.");
-  //     console.error(error);
-  //   }
-  // };
-  const [forms, setForms] = useState([{ id: Date.now(), nickname: "" }]);
-
-  // 폼 추가
-  const addForm = () => {
-    setForms([...forms, { id: Date.now(), nickname: "" }]);
+    try {
+      await sendVerificationCode(id);
+      alert("인증 코드가 이메일로 전송되었습니다.");
+    } catch (error) {
+      setIdError("인증 코드 전송에 실패했습니다.");
+    }
   };
 
-  // 폼 삭제
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      !isIdAvailable ||
+      !isNicknameAvailable ||
+      passwordError ||
+      confirmError
+    ) {
+      alert("모든 항목을 올바르게 입력해주세요.");
+      return;
+    }
+
+    alert("회원가입 성공!");
+  };
+
+  const addForm = () => {
+    setForms([
+      ...forms,
+      { id: Date.now(), petName: "", species: "", age: "", weight: "" },
+    ]);
+  };
+
   const removeForm = (id) => {
     setForms(forms.filter((form) => form.id !== id));
+  };
+
+  const handlePetInfoChange = (e, id, field) => {
+    const value = e.target.value;
+    setForms(
+      forms.map((form) => (form.id === id ? { ...form, [field]: value } : form))
+    );
   };
 
   return (
@@ -194,28 +169,33 @@ function SignUp() {
         </SignupTitle>
 
         <MailBox>
-          <table>
+          <table onSubmit={handleSubmit}>
             <tr></tr>
             <tr>
               <td>
                 <input
-                  onChange={onChangeIdHandler}
-                  type="email"
-                  id="id"
-                  name="id"
+                  type="text"
                   value={id}
+                  onChange={handleIdChange}
                   placeholder="이메일"
-                  theme="underLine"
-                  maxLength={10}
                 />
-                <button>인증</button>
+                <button type="button" onClick={handleIdCheck}>
+                  인증
+                </button>
               </td>
             </tr>
 
             <tr>
               <td>
-                <input type="text" placeholder="인증 코드" />
-                <button>확인</button>
+                <input
+                  type="text"
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  placeholder="인증 코드"
+                />
+                <button type="button" onClick={handleVerification}>
+                  확인
+                </button>
               </td>
             </tr>
             <tr>
@@ -235,7 +215,7 @@ function SignUp() {
             <tr>
               <td>
                 <input
-                  onChange={onChangePasswordHandler}
+                  onChange={handlePasswordChange}
                   type="password"
                   id="password"
                   name="password"
@@ -250,11 +230,11 @@ function SignUp() {
             <tr>
               <td>
                 <input
-                  onChange={onChangePasswordHandler}
+                  onChange={handleConfirmPasswordChange}
                   type="password"
                   id="confirm"
                   name="confirm"
-                  value={confirm}
+                  value={confirmPassword}
                   placeholder="비밀번호 확인"
                   theme="underLine"
                   maxLength={16}
@@ -265,7 +245,6 @@ function SignUp() {
               <td>
                 {" "}
                 <td>{passwordError && <small>{passwordError}</small>}</td>
-                {/* {confirmError && <small>{confirmError}</small>} */}
               </td>
             </tr>
           </table>
@@ -277,22 +256,19 @@ function SignUp() {
               <td>
                 {" "}
                 <input
-                  id="nickname"
                   type="text"
                   value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  onBlur={() => nicknameCheckHandler(nickname)} // Trigger the check when the input loses focus
+                  onChange={handleNicknameChange}
                   placeholder="닉네임을 입력하세요"
                 />
-                <button>확인</button>
+                <button type="button" onClick={handleNicknameCheck}>
+                  확인
+                </button>
               </td>
             </tr>
             <tr>
               <td className="idError">
                 {nicknameError && <small>{nicknameError}</small>}
-                {isNicknameAvailable && (
-                  <small>사용 가능한 닉네임입니다.</small>
-                )}
               </td>
             </tr>
           </table>
@@ -354,30 +330,45 @@ function SignUp() {
               <tr>
                 <td>
                   <input
-                    className="fristinput"
                     type="text"
                     placeholder="동물이름"
+                    value={form.petName}
+                    onChange={(e) => handlePetInfoChange(e, form.id, "petName")}
                   />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <input type="text" placeholder="동물종류" />
+                  <input
+                    type="text"
+                    placeholder="동물종류"
+                    value={form.species}
+                    onChange={(e) => handlePetInfoChange(e, form.id, "species")}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <input type="text" placeholder="동물나이" />
+                  <input
+                    type="text"
+                    placeholder="동물나이"
+                    value={form.age}
+                    onChange={(e) => handlePetInfoChange(e, form.id, "age")}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <input type="text" placeholder="동물무게" />
+                  <input
+                    type="text"
+                    placeholder="동물무게"
+                    value={form.weight}
+                    onChange={(e) => handlePetInfoChange(e, form.id, "weight")}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>
-                  {" "}
                   <AnimalBoxButton>
                     <button danger onClick={() => removeForm(form.id)}>
                       삭제
